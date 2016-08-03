@@ -1,7 +1,7 @@
 package me.yuez.jobs;
 
 import me.yuez.mappers.MaxTemperatureMapper;
-import me.yuez.reducers.MaxTemeratureReducer;
+import me.yuez.reducers.MaxTemperatureReducer;
 import org.apache.hadoop.conf.Configured;
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.io.IntWritable;
@@ -28,8 +28,8 @@ public class MaxTemperatureDriver extends Configured implements Tool {
         FileOutputFormat.setOutputPath(job, new Path(args[1]));
 
         job.setMapperClass(MaxTemperatureMapper.class);
-        job.setCombinerClass(MaxTemeratureReducer.class);
-        job.setReducerClass(MaxTemeratureReducer.class);
+        job.setCombinerClass(MaxTemperatureReducer.class);
+        job.setReducerClass(MaxTemperatureReducer.class);
 
         job.setOutputKeyClass(Text.class);
         job.setOutputValueClass(IntWritable.class);
