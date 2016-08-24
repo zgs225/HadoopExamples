@@ -7,19 +7,25 @@ public class NcdcRecordParser {
     private static final int MISSING_TEMPERATURE = 9999;
 
     private String year;
+    private String stationId;
     private int airTemperature;
     private String quality;
+    private boolean airTemperatureMalformed;
 
     protected void parse(String record) {
         year = record.substring(15, 19);
-        String airTemeratureString;
+        stationId = record.substring(4, 10) + "-" + record.substring(10, 15);
+        String airTemperatureString = "0";
+        airTemperatureMalformed = false;
 
         if (record.charAt(87) == '+')
-            airTemeratureString = record.substring(88, 92);
+            airTemperatureString = record.substring(88, 92);
+        else if (record.charAt(87) == '-')
+            airTemperatureString = record.substring(87, 92);
         else
-            airTemeratureString = record.substring(87, 92);
+            airTemperatureMalformed = true;
 
-        airTemperature = Integer.parseInt(airTemeratureString);
+        airTemperature = Integer.parseInt(airTemperatureString);
         quality = record.substring(92, 93);
     }
 
@@ -28,7 +34,17 @@ public class NcdcRecordParser {
     }
 
     public boolean isValidTemperature() {
-        return airTemperature != MISSING_TEMPERATURE && quality.matches("[01459]");
+        return !isMalformedTemperature() &&
+                ! isMissingTemperature() &&
+                quality.matches("[01459]");
+    }
+
+    public boolean isMalformedTemperature() {
+        return airTemperatureMalformed;
+    }
+
+    public boolean isMissingTemperature() {
+        return airTemperature == MISSING_TEMPERATURE;
     }
 
     public String getYear() {
@@ -37,5 +53,13 @@ public class NcdcRecordParser {
 
     public int getAirTemperature() {
         return airTemperature;
+    }
+
+    public String getStationId() {
+        return stationId;
+    }
+
+    public String getQuality() {
+        return quality;
     }
 }

@@ -26,7 +26,7 @@ public class JobBuilder {
         return job;
     }
 
-    private static void printUsage(Tool tool, String extraArgsUsage) {
+    public static void printUsage(Tool tool, String extraArgsUsage) {
         System.err.printf("Usage: %s [genericOptions] %s\n\n",
                 tool.getClass().getSimpleName(), extraArgsUsage);
         GenericOptionsParser.printGenericCommandUsage(System.err);
